@@ -8,8 +8,11 @@
 #include <ctime>
 #include <vector>
 #include <algorithm>
+#include <fstream>
+#include <climits>
+#include <cfloat>
 
-#include "../armadillo-5.200.2/include/armadillo"
+#include "armadillo-6.100.0/include/armadillo"
 
 typedef struct
 {
@@ -31,7 +34,7 @@ typedef struct
 } OUTTYPE;
 
 // need to be rewritten
-const double EPS = 0.00000001;
-const double INF = 1000000000;
+const double EPS = DBL_EPSILON;
+const double INF = std::numeric_limits<double>::infinity();
 
 #endif

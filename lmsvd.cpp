@@ -18,7 +18,7 @@ using namespace arma;
 //    U,S,V -- principal SVD of A with the r singular triplets
 //    Out -- output information
 //****************************
-void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
+void lmsvd(mat A, int r, PARAMETERS opts, mat & U, vec & S, mat & V, OUTTYPE & Out)
 {
 	int m = A.n_rows;
 	int n = A.n_cols;
@@ -29,7 +29,8 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 
   // set parameters
 	double tol = 1e-8;
-	int maxit = 300;
+	int maxit = 3;
+	//int maxit = 300;
 	double idisp = 0;
 	int mn = std::min(m, n);
 	int memo;
@@ -37,7 +38,7 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 	{
 		memo = 5;
 	}
-	else if(r <= (mn*0.02))
+	else if(r <= (mn*0.03))
 	{
 		memo = 4;
 	}
@@ -129,7 +130,7 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 			vec rv_sort = sort(vec(tE), "ascend");
 			vec rvr = rv_sort.rows(rv_sort.n_rows-r, rv_sort.n_rows-1);
 			chg_rvr = norm(rvr0-rvr, 2) / norm(rvr, 2);
-		  hrvs.row(iter-1) = rvr;
+		  hrvs.row(iter-1) = trans(rvr);
 		  AY = AY * tU;
 		  SX = SX * tU;
 		}
@@ -142,7 +143,7 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 	  if (chg_rvr < rtol)
 		{
 			mat kkt = AY.cols(AY.n_cols-r, AY.n_cols-1) - SX.cols(SX.n_cols-r, SX.n_cols-1) * diagmat(rvr);
-			vec kktcheck = sqrt(pow(kkt, 2) * ones(m, 1));
+			vec kktcheck = sqrt(trans(pow(kkt, 2)) * ones(m, 1));
 			double kktcheck_d = max(kktcheck) / std::max(tol, rvr(rvr.n_rows-1));
 			if (kktcheck_d < ptol)
 			{
@@ -199,7 +200,7 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 		eig_sym(ev, U, T);
 		uvec idx = sort_index(ev, "ascend");
 		double e_tol = std::min(std::sqrt(EPS), tol);
-		vec e_tol_vec = ones(idx.n_rows, ev.n_cols);
+		vec e_tol_vec = ones(idx.n_rows, ev.n_cols) * e_tol;
     uvec cut_vec = find(ev.rows(idx) > e_tol_vec, 1);
 		if (cut_vec.n_rows == 0)
 		{
@@ -236,7 +237,7 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 		vec rvr0_ = rvr;
 		rvr = rv_sort_T.rows(rv_sort_T.n_rows-r, rv_sort_T.n_rows-1);
 		chg_rvr = norm(rvr-rvr0_, 2) / norm(rvr, 2);
-		hrvs.row(iter-1) = rvr;
+		hrvs.row(iter-1) = trans(rvr);
 	  //// look-back optimization end
 	}
   // iter end
@@ -244,10 +245,11 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 	Out.Y = Y;
 	Out.memo = memo;
 	Out.iter = iter;
-	Out.chgv = chgv.rows(0, iter-1);
-	Out.kktc = kktc.rows(0, iter-1);
-	Out.xtrm = xtrm.rows(0, iter-1);
-	Out.hrvs = hrvs.rows(0, iter-1);
+	// iter = maxit + 1
+	Out.chgv = chgv.rows(0, iter-2);
+	Out.kktc = kktc.rows(0, iter-2);
+	Out.xtrm = xtrm.rows(0, iter-2);
+	Out.hrvs = hrvs.rows(0, iter-2);
   // call solver end
 	
 	// generate svd
@@ -269,13 +271,14 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat U, mat S, mat V, OUTTYPE Out)
 	}
   Out.svk = s_vec;
 	vec svk_temp = pow(Out.svk.rows(0, r-1), 2);
-	Out.hrvs.row(Out.hrvs.n_rows-1) = flipud(svk_temp);
+	Out.hrvs.row(Out.hrvs.n_rows-1) = trans(flipud(svk_temp));
 	//generate svd end
 	
 	// output principal SVD
   U = U.cols(0, r-1);
 	V = V.cols(0, r-1);
-	S = S.submat(span(0, r-1), span(0, r-1));
+	S = s_vec.rows(0, r-1);
+	//S = S.submat(span(0, r-1), span(0, r-1));
   // output principal SVD end
 	
 }

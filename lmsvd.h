@@ -4,7 +4,7 @@
 
 #include "common.h"
 
-void lmsvd(arma::mat A, int r, PARAMETERS opts, arma::mat U, arma::mat S, arma::mat V, OUTTYPE out);
+void lmsvd(arma::mat A, int r, PARAMETERS opts, arma::mat & U, arma::vec & S, arma::mat & V, OUTTYPE & out);
 
 //void set_param();
 //void get_svd();

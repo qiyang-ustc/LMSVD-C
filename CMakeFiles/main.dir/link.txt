@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11  -O0 -Wall -g -ggdb    CMakeFiles/main.dir/main.cpp.o CMakeFiles/main.dir/lmsvd.cpp.o  -o main -rdynamic -lblas -llapack 

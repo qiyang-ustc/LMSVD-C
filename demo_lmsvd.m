@@ -25,6 +25,8 @@ opts.maxit = 150;
 T1 = zeros(1,nR); E1 = T1; 
 T2 = T1; E2 = E1;
 
+A = load('data');
+
 for j = 1:nR
     
     r = Ranks(j); k = r + 10;

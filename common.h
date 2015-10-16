@@ -11,6 +11,7 @@
 #include <fstream>
 #include <climits>
 #include <cfloat>
+#include <chrono>
 
 #include "armadillo-6.100.0/include/armadillo"
 

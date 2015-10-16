@@ -2,10 +2,10 @@
 
 using namespace arma;
 
-double ferr(mat u, mat v)
+double ferr(mat U, mat V)
 {
-	vec u_vector = reshape(u, size(u,1)*size(u,2), 1);
-	vec v_vector = reshape(v, size(v,1)*size(v,2), 1);
+	vec u_vector = reshape(U, U.n_rows*U.n_cols, 1);
+	vec v_vector = reshape(V, V.n_rows*V.n_cols, 1);
 	return norm(u_vector - v_vector, 2) / norm(v_vector, 2);
 }
 
@@ -69,6 +69,8 @@ int main()
 		std::cerr << "error";
 	//input.open("data", std::ios::in);
 
+  /*
+
 	double temp = 0.0;
 	for(int i = 0; i < 2000; ++i)
 	{
@@ -79,6 +81,8 @@ int main()
 			A(i, j) = temp;
 		}
 	}
+	
+  */
 
 	input.close();
 
@@ -88,27 +92,62 @@ int main()
 //	opts.maxit = 4;
 	opts.maxit = 150;
 
-	mat T1 = zeros(1, nR);
-	mat E1 = T1;
-	mat T2 = T1;
-	mat E2 = E1;
+	mat U1;
+	mat V1;
+	vec S1;
 
 	mat U2;
 	mat V2;
 	vec S2;
 	OUTTYPE out;
 
+	using namespace std::chrono;
+
+  high_resolution_clock::time_point time_point_1;
+  high_resolution_clock::time_point time_point_2;
+
+  vec T1 = zeros(nR, 1);
+  vec E1 = zeros(nR, 1);
+
+  vec T2 = zeros(nR, 1);
+  vec E2 = zeros(nR, 1);
+
+  duration<double> t1;
+  duration<double> t2;
+
+  double e1;
+	double e2;
+
 	for (int j = 1; j <= nR; ++j)
 	{
 		int r = Ranks(j-1);
 		int k = r + 10;
 
-		// svds
+		// svd
+    
+		
+		time_point_1 = high_resolution_clock::now();
+		//svds(U1, S1, V1, A_temp, r, opts.tol);
+		svd(U1, S1, V1, A);
+		time_point_2 = high_resolution_clock::now();
+		t1 = time_point_2 - time_point_1;
+		e1 = ferr(U1 * diagmat(S1) * trans(V1), A);
+		std::cout << "lmsvd: res = " << e1 << '\t' << "t = " << t1.count() << '\n';
 
+		T1(j-1) = t1.count();
+		E1(j-1) = e1;
 
 		// lmsvd
 
+		time_point_1 = high_resolution_clock::now();
 		lmsvd(A, r, opts, U2, S2, V2, out);
+		time_point_2 = high_resolution_clock::now();
+		t2 = duration_cast<duration<double>>(time_point_2 - time_point_1);
+		e2 = ferr(U2 * diagmat(S2) * trans(V2), A);
+		std::cout << "lmsvd: res = " << e2 << '\t' << "t = " << t2.count() << '\n';
+		
+		T2(j-1) = t2.count();
+		E2(j-1) = e2;
 	}
 
 /*

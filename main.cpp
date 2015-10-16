@@ -69,7 +69,7 @@ int main()
 		std::cerr << "error";
 	//input.open("data", std::ios::in);
 
-  /*
+  
 
 	double temp = 0.0;
 	for(int i = 0; i < 2000; ++i)
@@ -82,7 +82,7 @@ int main()
 		}
 	}
 	
-  */
+  
 
 	input.close();
 

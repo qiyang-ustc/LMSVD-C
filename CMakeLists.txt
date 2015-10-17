@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
 add_executable(main ${SOURCE_FILES})
 
-link_directories("/opt/OpenBLAS/lib/")
+#link_directories("/opt/OpenBLAS/lib/")
 #target_link_libraries(main blas lapack)
 target_link_libraries(main openblas)
 #target_link_libraries(main openblas_sandybridgep-r0.2.14)

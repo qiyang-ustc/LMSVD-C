@@ -63,6 +63,7 @@ int main()
 		}
 	}
 
+
 	std::ifstream input("data", std::ios::in);
 	//std::ifstream input("/Users/abner/ClionProjects/test/data", std::ios::in);
 	if(!input)
@@ -81,6 +82,7 @@ int main()
 			A(i, j) = temp;
 		}
 	}
+	//A = A.submat(0,0,999,999);
 	
   
 
@@ -132,7 +134,7 @@ int main()
 		time_point_2 = high_resolution_clock::now();
 		t1 = time_point_2 - time_point_1;
 		e1 = ferr(U1 * diagmat(S1) * trans(V1), A);
-		std::cout << "lmsvd: res = " << e1 << '\t' << "t = " << t1.count() << '\n';
+		std::cout << "svd: res = " << e1 << '\t' << "t = " << t1.count() << '\n';
 
 		T1(j-1) = t1.count();
 		E1(j-1) = e1;

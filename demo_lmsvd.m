@@ -3,7 +3,7 @@
 clc
 % problem size
 %Asize = input('[m n] = ');
-Asize = [1 1]*2000;
+Asize = [1 1]*5000;
 m = Asize(1);
 n = Asize(2);
 
@@ -26,6 +26,7 @@ T1 = zeros(1,nR); E1 = T1;
 T2 = T1; E2 = E1;
 
 A = load('data');
+%A = A(1:1000,1:1000);
 
 for j = 1:nR
     
@@ -34,10 +35,10 @@ for j = 1:nR
     
     % Matlab svds
     tic; 
-    [U1,S1,V1] = svds(A,r,'L',opts);
-    %[U1,S1,V1] = svd(A);
+    %[U1,S1,V1] = svds(A,r,'L',opts);
+    [U1,S1,V1] = svd(A);
     t1 = toc; e1 = ferr(U1*S1*V1',A); sv1 = diag(S1);
-    fprintf(' svds: res = %16.12e, t = %5.3e\n',e1,t1);
+    fprintf(' svd: res = %16.12e, t = %5.3e\n',e1,t1);
     T1(j) = t1; E1(j) = e1;
      
     % lmsvd

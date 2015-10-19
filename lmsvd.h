@@ -9,6 +9,6 @@ void lmsvd(arma::mat A, int r, PARAMETERS opts, arma::mat & U, arma::vec & S, ar
 //void set_param();
 //void get_svd();
 //void check_matrix();
-void lm_lbo();
+//void lm_lbo();
 
 #endif

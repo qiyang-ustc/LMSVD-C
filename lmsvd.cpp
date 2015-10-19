@@ -284,9 +284,11 @@ void lmsvd(mat A, int r, PARAMETERS opts, mat & U, vec & S, mat & V, OUTTYPE & O
 }
 
 
+/*
 void lm_lbo()
 {
 }
+*/
 
 
 

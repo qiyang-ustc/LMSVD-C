@@ -4,11 +4,12 @@
 
 #include "common.h"
 
-void lmsvd(arma::mat A, int r, PARAMETERS opts, arma::mat & U, arma::vec & S, arma::mat & V, OUTTYPE & out);
+void lmsvd(
+    arma::mat A, int r, PARAMETERS opts, arma::mat &U, arma::vec &S, arma::mat &V, OUTTYPE &out);
 
-//void set_param();
-//void get_svd();
-//void check_matrix();
-//void lm_lbo();
+// void set_param();
+// void get_svd();
+// void check_matrix();
+// void lm_lbo();
 
 #endif

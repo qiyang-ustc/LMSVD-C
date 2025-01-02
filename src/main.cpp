@@ -1,6 +1,7 @@
 #include "lmsvd.h"
-#include <armadillo>
+#include "armadillo-14.2.2/include/armadillo"
 
+#define ARMA_USE_ARPACK
 using namespace arma;
 
 double ferr(mat U, mat V) {

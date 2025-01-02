@@ -38,5 +38,4 @@ set(ARPACK_INCLUDE_DIRS /opt/homebrew/opt/arpack/include)
 set(ARPACK_LIBRARIES /opt/homebrew/opt/arpack/lib/libarpack.dylib)
 
 target_include_directories(lmsvd PRIVATE ${ARPACK_INCLUDE_DIRS})
-target_link_libraries(lmsvd PRIVATE ${ARPACK_LIBRARIES})
-target_link_libraries(lmsvd PRIVATE ${OpenBLAS_LIBRARIES} ${LAPACK_LIBRARIES})
+target_link_libraries(lmsvd PRIVATE ${OpenBLAS_LIBRARIES} ${LAPACK_LIBRARIES}  ${ARPACK_LIBRARIES})

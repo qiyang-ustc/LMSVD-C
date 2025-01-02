@@ -28,4 +28,5 @@
 *.app
 
 .idea
+build
 cmake**

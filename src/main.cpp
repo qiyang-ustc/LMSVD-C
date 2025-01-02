@@ -1,4 +1,5 @@
 #include "lmsvd.h"
+#include <armadillo>
 
 using namespace arma;
 
@@ -64,15 +65,15 @@ int main() {
 
     // svd ====== Comment this if slows
 
-    // time_point_1 = high_resolution_clock::now();
-    // //svds(U1, S1, V1, A_temp, r, opts.tol);
-    // svd(U1, S1, V1, A);
-    // time_point_2 = high_resolution_clock::now();
-    // t1 = time_point_2 - time_point_1;
-    // // Truncate U1, S1, V1 to rank r for fair comparison
-    // e1 = ferr(U1 * diagmat(S1) * trans(V1), A);
-    // std::cout << "svd: res = \t\t" << e1 << '\t' << "t = " << t1.count() <<
-    // '\n';
+     time_point_1 = high_resolution_clock::now();
+     //svds(U1, S1, V1, A_temp, r, opts.tol);
+     svds(U1, S1, V1, A, r);
+     time_point_2 = high_resolution_clock::now();
+     t1 = time_point_2 - time_point_1;
+     // Truncate U1, S1, V1 to rank r for fair comparison
+     e1 = ferr(U1 * diagmat(S1) * trans(V1), A);
+     std::cout << "svd: res = \t\t" << e1 << '\t' << "t = " << t1.count() <<
+     '\n';
 
     // T1(j-1) = t1.count();
     // E1(j-1) = e1;
